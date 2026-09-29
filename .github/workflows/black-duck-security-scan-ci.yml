@@ -34,18 +34,35 @@ jobs:
     - name: Polaris Scan
       uses: blackduck-inc/black-duck-security-scan@152247222aa9cd38124acd5c0cf60f4db71adc3f # v2.11.0
       with:
-      ### ---------- POLARIS SCANNING: REQUIRED FIELDS ----------
+        ### SCANNING: Required fields
         polaris_server_url: ${{ vars.POLARIS_SERVER_URL }}
         polaris_access_token: ${{ secrets.POLARIS_ACCESS_TOKEN }}
         polaris_assessment_types: SAST,SCA
+
+        ### SCANNING OPTIONAL
         polaris_application_name: HVP-Demo-1
         polaris_project_name: ${{ github.event.repository.name }}
-        polaris_fixpr_enabled: false
+
+        ### SCANNING OPTIONAL: Pull Request comments
         polaris_prComment_enabled: true
+
+        ### SCANNING OPTIONAL: GitHub Issues
+        polaris_externalIssues_create: true
+
+        ### SCANNING OPTIONAL: Fix Pull Requests
+        polaris_fixpr_enabled: true
+
+        ### GITHUB Token
+        # Required when Pull Request comments, Fix Pull Requests or GitHub issues are enabled
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
+        ### ENABLE OPTIONAL SCAN REPORTS
         polaris_reports_sarif_create: true
         polaris_upload_sarif_report: true
+        
+        ### COVERITY BUILD COMMANDS (uncomment and configure for compiled languages)
         coverity_build_command: mvn -B -DskipTests package
         coverity_clean_command: mvn -B clean
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        
+        ### OPTIONAL DIAGNOSTICS: Upload logs as build artifact if true
         include_diagnostics: false
-        ###polaris_prComment_severities: "Critical, High, Medium, Low"
