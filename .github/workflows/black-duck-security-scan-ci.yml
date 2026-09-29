@@ -19,6 +19,12 @@ on:
 jobs:
   polaris:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      security-events: write
+      actions: read
+
     steps:
     
     - name: Checkout Source
